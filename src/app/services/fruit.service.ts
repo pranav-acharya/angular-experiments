@@ -10,6 +10,7 @@ import { Todo } from './todo';
 export class FruitService {
 	fruits: String[] = ['Mango', 'Banana', "apple", 'orange', 'ayy'];
 	todosUrl = 'https://jsonplaceholder.typicode.com/todos';
+	usersUrl = 'https://jsonplaceholder.typicode.com/users'
 	getFruits(): String[] {
 		return this.fruits;
 	}
@@ -17,6 +18,13 @@ export class FruitService {
 	getFruitsObservable(): Observable<Todo[]> {
 		return this.http.get<Todo[]>(this.todosUrl).pipe(
 			tap(t => console.log('fetched todos', t)),
+      		catchError(() => console.error)
+		);
+	}
+
+	getUsersObservable(): Observable<Todo[]> {
+		return this.http.get<Todo[]>(this.usersUrl).pipe(
+			tap(t => console.log('fetched users', t)),
       		catchError(() => console.error)
 		);
 	}
