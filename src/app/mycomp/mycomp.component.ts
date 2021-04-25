@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FruitService } from '../services/fruit.service';
 import { Todo } from '../services/todo';
-import { createSelector, Store } from '@ngrx/store';
+import { createSelector, Store, createFeatureSelector } from '@ngrx/store';
 import { State } from './mycomp.reducer';
 import { fetchUsers} from './mycomp.actions';
-import { StoreModule } from '@ngrx/store';
+// import { StoreModule } from '@ngrx/store';
 
 export const selectUsers = (state: State) => state.users;
 export const selectUsersFetching = (state: any) => {
@@ -12,7 +12,10 @@ export const selectUsersFetching = (state: any) => {
    return state.mycompState.fetchingUsers;
 } ;
 export const selectUserFetching = (state: State) => state.fetchingUser;
-
+export const selectUsersFetchingFeature = createSelector(
+  createFeatureSelector('mycompState'),
+  (state: State) => state.fetchingUsers
+)
 
 @Component({
   selector: 'app-mycomp',
@@ -46,7 +49,7 @@ export class MycompComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  	this.store.select(selectUsersFetching).subscribe((res) => {
+  	this.store.select(selectUsersFetchingFeature).subscribe((res) => {
   		console.log('from store', res);
   		this.usersLoading = res;
   	});
